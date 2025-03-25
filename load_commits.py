@@ -3,6 +3,7 @@
 import json
 import subprocess
 import os
+import argparse
 
 def load_commits_content(file_path='commits_content.json'):
     with open(file_path, 'r', encoding='utf-8') as f:
@@ -40,8 +41,11 @@ def apply_commit(commit):
     print(f"Commit applied: {commit_message}\n")
 
 def main():
-    file_path = 'commits_content.json'
-    commits_content = load_commits_content(file_path)
+    parser = argparse.ArgumentParser(description="Load and apply commits from a JSON file.")
+    parser.add_argument('file_path', type=str, help='Path to the JSON file containing commits')
+    args = parser.parse_args()
+
+    commits_content = load_commits_content(args.file_path)
     
     for commit in commits_content:
         apply_commit(commit)
