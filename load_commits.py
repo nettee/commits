@@ -18,7 +18,9 @@ def apply_commit(commit):
     # Apply added files
     for file_path, content in commit['added_files'].items():
         print(f"  Adding file: {file_path}")
-        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+        dirname = os.path.dirname(file_path)
+        if dirname:  # Only create directory if dirname is not empty
+            os.makedirs(dirname, exist_ok=True)
         with open(file_path, 'w', encoding='utf-8') as f:
             f.write(content)
         subprocess.run(['git', 'add', file_path], check=True)
@@ -26,6 +28,9 @@ def apply_commit(commit):
     # Apply modified files
     for file_path, content in commit['modified_files'].items():
         print(f"  Modifying file: {file_path}")
+        dirname = os.path.dirname(file_path)
+        if dirname:  # Only create directory if dirname is not empty
+            os.makedirs(dirname, exist_ok=True)
         with open(file_path, 'w', encoding='utf-8') as f:
             f.write(content)
         subprocess.run(['git', 'add', file_path], check=True)
